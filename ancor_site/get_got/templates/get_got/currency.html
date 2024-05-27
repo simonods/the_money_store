@@ -1,14 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  {% load static %}
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Currency - Solana Market</title>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
-</head>
-
-<body>
+{% extends 'get_got/base_en.html' %}
+{% block content %}
   <header>
     <h1>Currency</h1>
   </header>
@@ -19,5 +10,4 @@
       <!-- Include cryptocurrency market data here -->
     </section>
   </main>
-</body>
-</html>
+{% endblock %}

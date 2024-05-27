@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  {% load static %}
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>News - {{ title }}</title>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
-</head>
-
+{% extends 'get_got/base_en.html' %}
+{% block content %}
 <body>
   <header>
     <h1>News</h1>
@@ -19,5 +11,4 @@
       <!-- Include news articles here -->
     </section>
   </main>
-</body>
-</html>
+{% endblock %}
