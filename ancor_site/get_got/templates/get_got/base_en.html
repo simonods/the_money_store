@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>{{title}}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="shortcut icon" href="{% static 'get_got/images/main.ico' %}" type="image/x-icon"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'get_got/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'get_got/css/bootstrap.min.css' %}">
+    <script src="{% static 'get_got/js/bootstrap.min.js' %}"></script>
+</head>
+
+<body>
+<table class="table-page" border=0 cellpadding="0" cellspacing="0">
+    <tr>
+        <td valign=top>
+            {% block mainmenu %}
+            <nav class="navbar navbar-expand-lg bg-dark text-warning">
+                <div class="container-fluid">
+                    {% for m in menu %}
+                    {% if forloop.first %}
+                    <a class="navbar-brand text-warning" href="{% url m.url_name %}">{{m.title}}</a>
+                    <button class="navbar-toggler bg-warning" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon navbar-toggler-icon-bars"></span>
+                    </button>
+                    {% else %}
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active text-warning" aria-current="page" href="{% url m.url_name %}">{{m.title}}</a>
+                            </li>
+                        </ul>
+                    {% endif %}
+                    {% endfor %}
+                    {% if request.user.is_authenticated %}
+                        <ul class="navbar-nav ml-auto ">
+                            <li> <a class="nav-link disabled text-warning" aria-disabled="true"> {{ user.username }} </a></li>
+                            <li> <a class="nav-link active text-warning" aria-disabled="true">|</a> </li>
+                            <li>
+                                <a class="nav-link active text-warning" aria-disabled="true" href="{% url 'logout' %}">Log out</a>
+                            </li>
+                        </ul>
+                    {% else %}
+                        <ul class="navbar-nav ml-auto ">
+                            <li class="nav-item text-black">
+                                <a class="nav-link active text-warning" aria-disabled="true" href="{% url 'login' %}">Sign in</a>
+                                </li>
+                            <li> <a class="nav-link active text-warning" aria-disabled="true">|</a> </li>
+                            <li>
+                                <a class="nav-link active text-warning" aria-disabled="true" href="{% url 'register' %}">Sign up</a>
+                            </li>
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </nav>
+            {% endblock mainmenu %}
+
+            <!-- block content -->
+            <div class="content-text">
+                {% block content %}
+                {% endblock %}
+            </div>
+            <!-- endblock content -->
+
+        </td>
+    </tr>
+</table>
+
+<!-- footer -->
+<footer class="footer mt-auto py-3 bg-dark text-warning">
+  <div class="container text-center">
+    <span class="text-warning">2024 {{ title }}</span>
+  </div>
+</footer>
+<!-- end of footer and page -->
+</body>
+</html>
