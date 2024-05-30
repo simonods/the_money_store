@@ -2,10 +2,15 @@ from django.contrib.auth.views import LoginView, PasswordResetView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
-
+from rest_framework import viewsets, generics
+from django.contrib.auth import get_user_model, logout
+from .serializers import *
 from .forms import *
 from .models import *
 from .utils import *
+
+
+User = get_user_model()
 
 
 def main_page(request):
@@ -41,8 +46,10 @@ class LoginUser(DataMixin, LoginView):
         c_def = self.get_user_context(title='Login')
         return dict(list(context.items()) + list(c_def.items()))
 
-    # def get_success_url(self):
-    #     return reverse_lazy('after_login')
+
+def logout_user(request):
+    logout(request)
+    return redirect('main_page')
 
 
 class ForgotPassword(DataMixin, PasswordResetView):
@@ -65,3 +72,13 @@ class RegisterUser(DataMixin, CreateView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title='Registration')
         return dict(list(context.items()) + list(c_def.items()))
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class ArticleAPIView(generics.ListAPIView):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer

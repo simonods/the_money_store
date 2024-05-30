@@ -40,8 +40,21 @@ INSTALLED_APPS = [
     'get_got.apps.GetGotConfig',
     'bootstrap4',
     'django_countries',
+    'rest_framework',
+    'rest_framework.authtoken',
     # 'get_got',
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -83,8 +96,8 @@ DATABASES = {
         'NAME': 'tms_db',
         'USER': 'tms_admin',
         'PASSWORD': '183729Db',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'HOST': '',
+        'PORT': '',
     }
 }
 

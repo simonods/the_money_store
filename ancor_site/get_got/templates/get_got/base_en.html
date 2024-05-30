@@ -16,15 +16,15 @@
     <tr>
         <td valign=top>
             {% block mainmenu %}
-            <nav class="navbar navbar-expand-lg bg-dark text-warning">
+            <nav class="navbar navbar-expand-lg navbar-light bg-dark text-warning">
                 <div class="container-fluid">
                     {% for m in menu %}
                     {% if forloop.first %}
                     <a class="navbar-brand text-warning" href="{% url m.url_name %}">{{m.title}}</a>
-                    <button class="navbar-toggler bg-warning" type="button" data-bs-toggle="collapse"
+                    <button class="navbar-toggler navbar-toggler-right bg-warning" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon navbar-toggler-icon-bars"></span>
+                            <span class="navbar-toggler-icon"></span>
                     </button>
                     {% else %}
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -58,7 +58,6 @@
                 </div>
             </nav>
             {% endblock mainmenu %}
-
             <!-- block content -->
             <div class="content-text">
                 {% block content %}
@@ -76,6 +75,5 @@
     <span class="text-warning">2024 {{ title }}</span>
   </div>
 </footer>
-<!-- end of footer and page -->
 </body>
 </html>
