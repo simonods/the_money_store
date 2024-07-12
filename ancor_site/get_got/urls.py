@@ -18,4 +18,5 @@ urlpatterns = [
     path('forgot_password/', ForgotPassword.as_view(), name='forgot_password'),
     path('after_login/', after_login, name='after_login'),
     path('', include(router.urls)),
+    path('nft_uranus/', nft_uranus, name='nft_uranus'),
 ]

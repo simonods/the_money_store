@@ -9,4 +9,16 @@ class UserInfoAdmin(admin.ModelAdmin):
     search_fields = ('username',)
 
 
+class PositionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'category', 'price_usdt')
+    list_display_links = ('id', 'title', 'category', 'price_usdt')
+    search_fields = ('title',)
+
+
+class CategoryPositionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'category_name')
+
+
 admin.site.register(UserInfo, UserInfoAdmin)
+admin.site.register(Position, PositionAdmin)
+admin.site.register(CategoryPosition, CategoryPositionAdmin)

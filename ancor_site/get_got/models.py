@@ -60,12 +60,28 @@ class UserInfo(AbstractUser):
         return self.username
 
     class Meta:
-        verbose_name = _('Cryptanu')
-        verbose_name_plural = _('Cryptanu')
+        verbose_name = _('Cryptan_user')
+        verbose_name_plural = _('Cryptanu_users')
         ordering = ['last_action_date', 'username']
         swappable = 'AUTH_USER_MODEL'
 
 
-# UserInfo._meta.get_field('groups').related_name = 'user_groups'
-# UserInfo._meta.get_field('user_permissions').related_name = 'user_permissions'
+class Position(models.Model):
+    title = models.CharField(max_length=255)
+    describe = models.TextField(blank=True)
+    time_create = models.DateTimeField(auto_now_add=True)
+    time_update = models.DateTimeField(auto_now=True)
+    is_published = models.BooleanField(default=False)
+    category = models.ForeignKey('CategoryPosition', on_delete=models.PROTECT, null=True, blank=True)
 
+    price_usdt = models.DecimalField(max_digits=27, decimal_places=8, blank=True)
+
+    def __str__(self):
+        return self.title
+
+
+class CategoryPosition(models.Model):
+    category_name = models.CharField(max_length=30, db_index=True)
+
+    def __str__(self):
+        return self.category_name

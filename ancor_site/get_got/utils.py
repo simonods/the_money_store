@@ -4,6 +4,7 @@ menu = [
     {'title': 'Currence', 'url_name': 'currency'},
     {'title': 'About Us', 'url_name': 'about_us'},
     {'title': 'Contact', 'url_name': 'contact'},
+    {'title': 'NFT Uranus', 'url_name': 'nft_uranus'},
 ]
 
 

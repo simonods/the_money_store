@@ -10,10 +10,10 @@ NEWS_URL = urljoin(BASE_URL, "en/square/news/market")
 
 @dataclass
 class Article:
-    # pub_time: str
+    pub_time: str
     title: str
     content: str
-    # currency: list[float]
+    currency: list[float]
 
 
 def parse_currency(currencies: BeautifulSoup):
@@ -22,10 +22,10 @@ def parse_currency(currencies: BeautifulSoup):
 
 def parse_single_article(article: BeautifulSoup):
     return Article(
-        # pub_time=article.select_one(".css-vyak18").text,
+        pub_time=article.select_one(".css-vyak18").text,
         title=article.select_one(".css-yxpvu").text,
         content=article.select_one(".css-10lrpzu").text,
-        # currency=parse_currency(article.select_one(".trading-pairs"))
+        currency=parse_currency(article.select_one(".trading-pairs"))
     )
 
 

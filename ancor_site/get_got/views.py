@@ -33,10 +33,15 @@ def contact(request):
     return render(request, 'get_got/contact.html', {'title': 'Solana Market', 'menu': menu})
 
 
+def nft_uranus(request):
+    return render(request, 'get_got/nft_generator.html', {'title': 'Solana Market', 'menu': menu})
+
+
 def after_login(request):
     return render(request, 'get_got/after_login.html', {'title': 'Solana Market', 'menu': menu, 'username': UserInfo.username})
 
 
+# User AUTH
 class LoginUser(DataMixin, LoginView):
     form_class = CustomAuthenticationForm
     template_name = 'get_got/login_page.html'
