@@ -4,6 +4,10 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
 from rest_framework import viewsets, generics
 from django.contrib.auth import get_user_model, logout
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from .serializers import *
 from .forms import *
 from .models import *
@@ -87,3 +91,44 @@ class UserViewSet(viewsets.ModelViewSet):
 class ArticleAPIView(generics.ListAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
+
+
+class PositionAPIView(APIView):
+    def get(self, request):
+        pos = Position.objects.all()
+        return Response({'positions': PositionSerializer(pos, many=True).data})
+
+    def post(self, request):
+        serialzer = PositionSerializer(data=request.data)
+        serialzer.is_valid(raise_exception=True)
+        serialzer.delete()
+
+        return Response({'post': serialzer.data})
+
+    def put(self, request, *args, **kwargs):
+        pk = kwargs.get('pk', None)
+        if not pk:
+            return Response({'error': 'Method PUT not allowed'})
+
+        try:
+            instance = Position.objects.get(pk=pk)
+        except:
+            return Response({'error': 'object does not exist'})
+
+        serializer = PositionSerializer(data=request.data, instance=instance)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'post': serializer.data})
+
+    def delete(self, request, *args, **kwargs):
+        pk = kwargs.get('pk', None)
+        if not pk:
+            return Response({'error': 'Method Delete not allowed'})
+
+        try:
+            instance = Position.objects.get(pk=pk)
+            instance.delete()
+            return Response({'post': 'delete post in try ' + str(pk)})
+
+        except:
+            return Response({'error': 'object does not exist'})

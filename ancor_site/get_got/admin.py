@@ -10,7 +10,7 @@ class UserInfoAdmin(admin.ModelAdmin):
 
 
 class PositionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'category', 'price_usdt')
+    list_display = ('id', 'title', 'category', 'price_usdt', 'is_published')
     list_display_links = ('id', 'title', 'category', 'price_usdt')
     search_fields = ('title',)
 

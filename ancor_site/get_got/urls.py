@@ -19,4 +19,7 @@ urlpatterns = [
     path('after_login/', after_login, name='after_login'),
     path('', include(router.urls)),
     path('nft_uranus/', nft_uranus, name='nft_uranus'),
+    path('api/v1/positionlist/', PositionAPIView.as_view()),
+    path('api/v1/positionlist/<int:pk>/', PositionAPIView.as_view()),
+
 ]

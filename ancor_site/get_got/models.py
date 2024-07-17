@@ -72,16 +72,16 @@ class Position(models.Model):
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=False)
-    category = models.ForeignKey('CategoryPosition', on_delete=models.PROTECT, null=True, blank=True)
+    category = models.ForeignKey('CategoryPosition', on_delete=models.PROTECT, null=True)
 
-    price_usdt = models.DecimalField(max_digits=27, decimal_places=8, blank=True)
+    price_usdt = models.DecimalField(max_digits=27, decimal_places=8)
 
     def __str__(self):
         return self.title
 
 
 class CategoryPosition(models.Model):
-    category_name = models.CharField(max_length=30, db_index=True)
+    category_name = models.CharField(max_length=100, db_index=True)
 
     def __str__(self):
         return self.category_name
