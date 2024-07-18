@@ -13,7 +13,6 @@ from .forms import *
 from .models import *
 from .utils import *
 
-
 User = get_user_model()
 
 
@@ -42,7 +41,8 @@ def nft_uranus(request):
 
 
 def after_login(request):
-    return render(request, 'get_got/after_login.html', {'title': 'Solana Market', 'menu': menu, 'username': UserInfo.username})
+    return render(request, 'get_got/after_login.html',
+                  {'title': 'Solana Market', 'menu': menu, 'username': UserInfo.username})
 
 
 # User AUTH
@@ -93,42 +93,21 @@ class ArticleAPIView(generics.ListAPIView):
     serializer_class = ArticleSerializer
 
 
-class PositionAPIView(APIView):
-    def get(self, request):
-        pos = Position.objects.all()
-        return Response({'positions': PositionSerializer(pos, many=True).data})
+class PositionViewSet(viewsets.ModelViewSet):
+    queryset = Position.objects.all()
+    serializer_class = PositionSerializer
 
-    def post(self, request):
-        serialzer = PositionSerializer(data=request.data)
-        serialzer.is_valid(raise_exception=True)
-        serialzer.delete()
 
-        return Response({'post': serialzer.data})
+class PositionAPIList(generics.ListCreateAPIView):  # GET, POST requests
+    queryset = Position.objects.all()
+    serializer_class = PositionSerializer
 
-    def put(self, request, *args, **kwargs):
-        pk = kwargs.get('pk', None)
-        if not pk:
-            return Response({'error': 'Method PUT not allowed'})
 
-        try:
-            instance = Position.objects.get(pk=pk)
-        except:
-            return Response({'error': 'object does not exist'})
+class PositionAPIUpdate(generics.UpdateAPIView):  # PUT, PATCH requests
+    queryset = Position.objects.all()
+    serializer_class = PositionSerializer
 
-        serializer = PositionSerializer(data=request.data, instance=instance)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({'post': serializer.data})
 
-    def delete(self, request, *args, **kwargs):
-        pk = kwargs.get('pk', None)
-        if not pk:
-            return Response({'error': 'Method Delete not allowed'})
-
-        try:
-            instance = Position.objects.get(pk=pk)
-            instance.delete()
-            return Response({'post': 'delete post in try ' + str(pk)})
-
-        except:
-            return Response({'error': 'object does not exist'})
+class PositionAPIDetail(generics.RetrieveUpdateDestroyAPIView):  # GET, PUT, PATCH, DELETE requests
+    queryset = Position.objects.all()
+    serializer_class = PositionSerializer

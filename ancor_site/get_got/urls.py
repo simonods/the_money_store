@@ -1,10 +1,13 @@
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import DefaultRouter, SimpleRouter
 from .views import *
 
 
-router = DefaultRouter()
-router.register(r'users', UserViewSet)
+user_router = DefaultRouter()
+user_router.register(r'users', UserViewSet)
+
+position_router = SimpleRouter()
+position_router.register(r'positions', PositionViewSet)
 
 urlpatterns = [
     path('', main_page, name='main_page'),
@@ -17,9 +20,10 @@ urlpatterns = [
     path('register/', RegisterUser.as_view(), name='register'),
     path('forgot_password/', ForgotPassword.as_view(), name='forgot_password'),
     path('after_login/', after_login, name='after_login'),
-    path('', include(router.urls)),
+    path('', include(user_router.urls)),
     path('nft_uranus/', nft_uranus, name='nft_uranus'),
-    path('api/v1/positionlist/', PositionAPIView.as_view()),
-    path('api/v1/positionlist/<int:pk>/', PositionAPIView.as_view()),
+    path('api/v1/', include(position_router.urls)),  # GET, POST req
+    # path('api/v1/positionlist/', PositionViewSet.as_view({'get': 'list'})),
+    # path('api/v1/positionlist/<int:pk>/', PositionViewSet.as_view({'put': 'update'})),
 
 ]

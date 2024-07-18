@@ -29,7 +29,8 @@ def validate_phone_number(value):
 
 class UserInfo(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
-    phone_number = models.CharField(_('phone number'), max_length=20, validators=[validate_phone_number], blank=True, null=True)
+    phone_number = models.CharField(_('phone number'), max_length=20, validators=[validate_phone_number],
+                                    blank=True, null=True)
 
     country = CountryField(_('country/region'), blank=True, null=True)
     address = models.CharField(_('shipping address'), max_length=255, blank=True, null=True)
@@ -45,9 +46,11 @@ class UserInfo(AbstractUser):
     gender = models.CharField(_('gender'), max_length=10, choices=gender_choices, blank=True, null=True)
 
     usd_balance = models.DecimalField(_('USD balance'), max_digits=10, decimal_places=2, blank=True, null=True)
-    bonus_usd_balance = models.DecimalField(_('Bonus USD balance'), max_digits=10, decimal_places=2, blank=True, null=True)
+    bonus_usd_balance = models.DecimalField(_('Bonus USD balance'), max_digits=10, decimal_places=2,
+                                            blank=True, null=True)
 
-    verification_image = models.ImageField(_('verification image'), upload_to='verification/%Y/%m/%d/', null=True, blank=True)
+    verification_image = models.ImageField(_('verification image'), upload_to='verification/%Y/%m/%d/',
+                                           null=True, blank=True)
     verification_accepted = models.BooleanField(_('is verified'), default=False)
 
     bottomless_pit = models.BooleanField(_('bottomless pit'), default=False)
@@ -73,6 +76,7 @@ class Position(models.Model):
     time_update = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=False)
     category = models.ForeignKey('CategoryPosition', on_delete=models.PROTECT, null=True)
+    user = models.ForeignKey(UserInfo, verbose_name='Користувач', on_delete=models.CASCADE)
 
     price_usdt = models.DecimalField(max_digits=27, decimal_places=8)
 
