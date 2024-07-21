@@ -51,3 +51,8 @@ class ForgotPassword(ModelForm):
         model = UserInfo
         fields = ['username', 'email',]
 
+
+class ImageForm(forms.ModelForm):
+    class Meta:
+        model = Position
+        fields = ['image', 'title']

@@ -55,6 +55,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ],
 
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 20,
+
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',  # Editing API using browser
@@ -144,9 +147,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = []
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'static'),
 
 # Default primary key field type
@@ -154,8 +155,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static'),
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 AUTH_USER_MODEL = 'get_got.UserInfo'
 

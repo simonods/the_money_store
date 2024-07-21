@@ -1,10 +1,12 @@
 menu = [
     {'title': 'Main Page', 'url_name': 'main_page'},
     {'title': 'News', 'url_name': 'news'},
+    {'title': 'Marketplace', 'url_name': 'market'},
     {'title': 'Currence', 'url_name': 'currency'},
     {'title': 'About Us', 'url_name': 'about_us'},
     {'title': 'Contact', 'url_name': 'contact'},
     {'title': 'NFT Uranus', 'url_name': 'nft_uranus'},
+
 ]
 
 

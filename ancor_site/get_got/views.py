@@ -1,9 +1,13 @@
+import requests
+
 from django.contrib.auth.views import LoginView, PasswordResetView
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView
-from rest_framework import viewsets, generics
+from django.views.generic import ListView, CreateView, FormView, TemplateView
 from django.contrib.auth import get_user_model, logout
+
+from rest_framework import viewsets, generics
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -96,6 +100,53 @@ class ArticleAPIView(generics.ListAPIView):
 class PositionViewSet(viewsets.ModelViewSet):
     queryset = Position.objects.all()
     serializer_class = PositionSerializer
+
+
+class MarketplacePositionsView(DataMixin, TemplateView):
+    template_name = 'get_got/the_money_store.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        api_url = 'http://127.0.0.1:8000/api/v1/positions/'
+
+        page = self.request.GET.get('page', 1)
+        per_page = self.request.GET.get('per_page', 10)
+
+        response = requests.get(api_url)
+
+        # Проверка успешности запроса
+        if response.status_code == 200:
+            data = response.json()
+            # Извлечение списка товаров из ключа 'results'
+            products = data.get('results', [])
+        else:
+            products = []
+
+        # Пагинация
+        paginator = Paginator(products, per_page)
+        page_obj = paginator.get_page(page)
+
+        # Добавление данных в контекст
+        context['page_obj'] = page_obj
+        context['per_page'] = per_page
+        return context
+
+
+
+class ImageUploadView(FormView):  # GPT
+    template_name = 'get_got/upload.html'
+    form_class = ImageForm
+    success_url = reverse_lazy('images')
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+class ImageListView(ListView):  # GPT
+    model = Position
+    template_name = 'get_got/image_list.html'
+    context_object_name = 'images'
 
 
 class PositionAPIList(generics.ListCreateAPIView):  # GET, POST requests
