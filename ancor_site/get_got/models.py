@@ -77,7 +77,7 @@ class Position(models.Model):
     is_published = models.BooleanField(default=False)
     category = models.ForeignKey('CategoryPosition', on_delete=models.PROTECT, null=True)
     user = models.ForeignKey(UserInfo, verbose_name='Користувач', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='images/', blank=True)
+    image = models.ImageField(upload_to='images/', blank=True, default='images/img_not_found.jpg')
     price_usdt = models.DecimalField(max_digits=27, decimal_places=8)
 
     def __str__(self):

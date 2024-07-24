@@ -21,32 +21,32 @@ User = get_user_model()
 
 
 def main_page(request):
-    return render(request, 'get_got/main_page.html', {'title': 'Solana Market', 'menu': menu})
+    return render(request, 'get_got/main_page.html', context=(get_data_context()))
 
 
 def news(request):
-    return render(request, 'get_got/news.html', {'title': 'Solana Market', 'menu': menu})
+    return render(request, 'get_got/news.html', context=(get_data_context()))
 
 
 def currency(request):
-    return render(request, 'get_got/currency.html', {'title': 'Solana Market', 'menu': menu})
+    return render(request, 'get_got/currency.html', context=(get_data_context()))
 
 
 def about_us(request):
-    return render(request, 'get_got/about_us.html', {'title': 'Solana Market', 'menu': menu})
+    return render(request, 'get_got/about_us.html', context=(get_data_context()))
 
 
 def contact(request):
-    return render(request, 'get_got/contact.html', {'title': 'Solana Market', 'menu': menu})
+    return render(request, 'get_got/contact.html', context=(get_data_context()))
 
 
 def nft_uranus(request):
-    return render(request, 'get_got/nft_generator.html', {'title': 'Solana Market', 'menu': menu})
+    return render(request, 'get_got/nft_generator.html', context=(get_data_context()))
 
 
 def after_login(request):
     return render(request, 'get_got/after_login.html',
-                  {'title': 'Solana Market', 'menu': menu, 'username': UserInfo.username})
+                  context=DataMixin.get_user_context(request))
 
 
 # User AUTH
@@ -104,49 +104,28 @@ class PositionViewSet(viewsets.ModelViewSet):
 
 class MarketplacePositionsView(DataMixin, TemplateView):
     template_name = 'get_got/the_money_store.html'
+    serializer = PositionSerializer
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['menu'] = menu
+        positions = Position.objects.all()
 
-        api_url = 'http://127.0.0.1:8000/api/v1/positions/'
-
+        # Додаємо пагінацію
         page = self.request.GET.get('page', 1)
-        per_page = self.request.GET.get('per_page', 10)
-
-        response = requests.get(api_url)
-
-        # Проверка успешности запроса
-        if response.status_code == 200:
-            data = response.json()
-            # Извлечение списка товаров из ключа 'results'
-            products = data.get('results', [])
-        else:
-            products = []
-
-        # Пагинация
-        paginator = Paginator(products, per_page)
+        per_page = self.request.GET.get('per_page', 5)
+        try:
+            per_page = int(per_page)
+        except ValueError:
+            per_page = 5
+        paginator = Paginator(positions, per_page)
         page_obj = paginator.get_page(page)
 
-        # Добавление данных в контекст
-        context['page_obj'] = page_obj
+        context['positions'] = positions
         context['per_page'] = per_page
+        context['page_obj'] = page_obj
+
         return context
-
-
-
-class ImageUploadView(FormView):  # GPT
-    template_name = 'get_got/upload.html'
-    form_class = ImageForm
-    success_url = reverse_lazy('images')
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
-
-class ImageListView(ListView):  # GPT
-    model = Position
-    template_name = 'get_got/image_list.html'
-    context_object_name = 'images'
 
 
 class PositionAPIList(generics.ListCreateAPIView):  # GET, POST requests

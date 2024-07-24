@@ -2,14 +2,9 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter, SimpleRouter
+
 from .views import *
-
-
-user_router = DefaultRouter()
-user_router.register(r'users', UserViewSet)
-
-position_router = SimpleRouter()
-position_router.register(r'positions', PositionViewSet)
+from .routers import *
 
 urlpatterns = [
     path('', main_page, name='main_page'),
@@ -23,11 +18,10 @@ urlpatterns = [
     path('register/', RegisterUser.as_view(), name='register'),
     path('forgot_password/', ForgotPassword.as_view(), name='forgot_password'),
     path('after_login/', after_login, name='after_login'),
-    path('', include(user_router.urls)),
+    # path('', include(user_router.urls)),
+    path('', include(position_router.urls)),
     path('nft_uranus/', nft_uranus, name='nft_uranus'),
     path('api/v1/', include(position_router.urls)),  # GET, POST req
-    path('image_upload/', ImageUploadView.as_view(), name='image_upload'),
-    path('image_list/', ImageListView.as_view(), name='image_list'),
 
 ]
 
