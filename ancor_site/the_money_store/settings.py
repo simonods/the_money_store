@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_countries',
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
     # 'get_got',
 ]
 
@@ -74,6 +75,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'the_money_store.urls'
@@ -161,3 +163,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 AUTH_USER_MODEL = 'get_got.UserInfo'
 
 LOGIN_REDIRECT_URL = 'after_login'
+
+CORS_ORIGIN_ALLOW_ALL = True

@@ -22,6 +22,8 @@ urlpatterns = [
     path('', include(position_router.urls)),
     path('nft_uranus/', nft_uranus, name='nft_uranus'),
     path('api/v1/', include(position_router.urls)),  # GET, POST req
+    path('api/coinmarketcap/', CoinMarketCupAPIDataView.as_view(), name='coinmarketcap'),
+    path('cmc_test/', coin_market_cap, name='cmc_test'),
 
 ]
 

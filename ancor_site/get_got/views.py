@@ -1,14 +1,17 @@
+import json
+import os
 import requests
 
 from django.contrib.auth.views import LoginView, PasswordResetView
 from django.core.paginator import Paginator
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, FormView, TemplateView
 from django.contrib.auth import get_user_model, logout
 
 from rest_framework import viewsets, generics
-from rest_framework.permissions import AllowAny
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -16,6 +19,7 @@ from .serializers import *
 from .forms import *
 from .models import *
 from .utils import *
+from .coin_market_cup import api_key, api_url
 
 User = get_user_model()
 
@@ -95,6 +99,23 @@ class UserViewSet(viewsets.ModelViewSet):
 class ArticleAPIView(generics.ListAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
+
+
+class CoinMarketCupAPIDataView(generics.ListAPIView):
+    def get(self, request):
+        url = api_url
+        # url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
+        headers = {
+            'Accepts': 'application/json',
+            'X-CMC_PRO_API_KEY': api_key,
+        }
+        response = requests.get(url, headers=headers)
+        data = response.json()
+        return Response(data)
+
+
+def coin_market_cap(request):
+    return render(request, 'get_got/cmc_test.html', context=get_data_context())
 
 
 class PositionViewSet(viewsets.ModelViewSet):
