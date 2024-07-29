@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os.path
 from pathlib import Path
 
+from celery.schedules import crontab
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -165,3 +167,18 @@ AUTH_USER_MODEL = 'get_got.UserInfo'
 LOGIN_REDIRECT_URL = 'after_login'
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
+# Конфігурація для Celery Beat
+CELERY_BEAT_SCHEDULE = {
+    'get-crypto-icons-every-minute': {
+        'task': 'your_app_name.tasks.get_crypto_icons',
+        'schedule': crontab(minute='*/1'),  # Запуск кожну хвилину
+    },
+}

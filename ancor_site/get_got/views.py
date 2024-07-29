@@ -10,7 +10,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, FormView, TemplateView
 from django.contrib.auth import get_user_model, logout
 
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -20,6 +20,8 @@ from .forms import *
 from .models import *
 from .utils import *
 from .coin_market_cup import api_key, api_url
+from .crypto_icons_parser import get_crypto_icons
+from .tasks import get_crypto_icons
 
 User = get_user_model()
 
@@ -113,8 +115,12 @@ class CoinMarketCupAPIDataView(generics.ListAPIView):
         data = response.json()
         return Response(data)
 
+    def post(self, request, *args, **kwargs):
+        task = get_crypto_icons.delay()  # Запуск задачі у фоновому режимі
+        return Response({"task_id": task.id}, status=status.HTTP_202_ACCEPTED)
 
-def coin_market_cap(request):
+
+def cryptocurrency(request):
     return render(request, 'get_got/cmc_test.html', context=get_data_context())
 
 

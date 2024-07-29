@@ -1,0 +1,83 @@
+{% extends 'get_got/base_en.html' %}
+{% block content %}
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoCurrency</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .table-container {
+            overflow-x: auto;
+        }
+        .symbol-text {
+            font-size: 0.8em;
+            color: rgba(0, 0, 0, 0.6);
+        }
+        .crypto-name {
+            display: flex;
+            align-items: center;
+        }
+        .crypto-img {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid mt-5 text-left">
+        <h1 class="text-center">CryptoCurrency</h1>
+            <div class="table-container">
+                <table class="table table-warning table-hover">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Cryptocurrency</th>
+                            <th>Circulating Supply</th>
+                            <th>Total Supply</th>
+                            <th>Price (USD)</th>
+                            <th>Market Cap (USD)</th>
+                            <th>24h Volume (USD)</th>
+                        </tr>
+                    </thead>
+                <tbody id="crypto-table-body">
+                </tbody>
+                </table>
+            </div>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    fetch('/api/coinmarketcap/')
+        .then(response => response.json())
+        .then(data => {
+            const cryptoTableBody = document.getElementById('crypto-table-body');
+            const mediaUrl = '/media/crypto_icons/';
+
+            data.data.forEach(crypto => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${crypto.cmc_rank}</td>
+                    <td class="crypto-name">
+                        <img src="${mediaUrl}${crypto.symbol}.png" alt="${crypto.symbol}" class="crypto-img">
+                                ${crypto.name} <span class="symbol-text">(${crypto.symbol})</span>
+                    </td>
+                    <td>${crypto.circulating_supply.toFixed(2)}</td>
+                    <td>${crypto.total_supply.toFixed(2)}</td>
+                    <td>${crypto.quote.USD.price}</td>
+                    <td>${crypto.quote.USD.market_cap.toFixed(2)}</td>
+                    <td>${crypto.quote.USD.volume_24h.toFixed(2)}</td>
+                `;
+                cryptoTableBody.appendChild(row);
+            });
+        });
+    });
+    </script>
+</body>
+</html>
+
+
+{% endblock %}
